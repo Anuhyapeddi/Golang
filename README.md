@@ -33,7 +33,8 @@ myConst = "another value"    // gives you an error
 var intNum int = 2
 var intNum2 uint8 = 67    // unsigned 8 byte integer
 var myString string = "my name is anu"
-fmt.Println(len("test"))     // it gives the length of the string, here the length is not the number of charaters but the number of bytes.
+fmt.Println(len("test"))
+// it gives the length of the string, here the length is not the number of charaters but the number of bytes.
 // Go uses UTF encoding
 var myRune rune = 'a'
 var myBoolean bool = false
@@ -54,7 +55,7 @@ default value for boolean - false
 
 Arthematic operations - you can't perform operations with mix type. (Go is strongly typed)
 
-one datatype is not added to another datatype, if you want to do that you need to cast to the common datatype. 
+You cannot add two different datatypes, if you want to do that you need to cast to the common datatype. 
 
 ```go
 var intNum int = 3
@@ -77,4 +78,207 @@ int1, int2 := 1, 2
 ```
 
 ## Functions and Control Statements
+
+``` go
+package main        // it is the special file, this files tells the complier to start you compilation from this file
+import "fmt"        // fmt package is used to display on the terminal/ console
+
+func main(){        // This is the main function
+    var variable1 string = "Hi my name is anu"
+    var variable2 string = "This is my third day of the work"
+    myfirst(variable1, variable2)
+}
+
+func myfirst(variable1 string, variable2 string){
+    fmt.Println(variable1)
+    fmt.Println(variable2)
+}
+
+```
+### errors
+
+* Rrror is an another built-in type in go
+* Rather then returning error, we use this error type
+* The default value of error is nil
+
+``` go
+package main
+
+import (
+    "fmt"
+    "errors"    // import errors type to use them
+)
+
+func main(){
+    var num1 int = 2
+    var num2 int = 4
+    var res, rem, err= division(num1, num2)
+    if err!=nil{         // checking if the err is nil or not
+        fmt.Println(err.Error())
+    }else if rem == 0{
+        fmt.Printf("This result of this integer divisor is %v ", res)
+    }else {
+         fmt.Println(res, rem)
+         fmt.Printf("The is the divisor %v and this is the remainder %v ", res, rem)
+    }
+
+}
+
+func division(num1 int, num2 int) (int, int, error){
+    var err error      // initizing the error type
+    if num2==0{
+        err = errors.New("Cannot divide with zero")      // calling new method
+        return 0, 0, err
+    }
+    var res int = num1/num2
+    var rem int = num1%num2
+    return res, rem, err
+}
+```
+### if else statements
+
+``` go
+package main
+
+import (
+    "fmt"
+)
+
+func main(){
+    var sub1 int = 20
+    var sub2 int = 30
+    var res string = subjects(sub1, sub2)
+    fmt.Println(res)
+}
+
+func subjects(sub1 int, sub2 int) (string){
+    var res int =  sub1 + sub2
+    if res >= 60{
+        return "eligible for next sem"
+    } else if res < 60 && res > 40{
+        return "Need to take an extra credit to get eligible"
+    } else {
+        return "You failed! Need to take this subject again"
+    }
+}
+```
+### and or 
+
+and - &&
+or - ||
+
+### switch statements
+
+``` go
+package main
+
+import (
+    "fmt"
+)
+
+func main(){
+    var sub1 int = 20
+    var sub2 int = 30
+    var res string = subjects(sub1, sub2)
+    fmt.Println(res)
+}
+
+func subjects(sub1 int, sub2 int) (string){
+    var res int =  sub1 + sub2
+    switch{
+        case res >= 60:
+            return "eligible for next sem"
+        case res < 60 && res > 40:
+            return "Need to take an extra credit to get eligible"
+        case res < 40:
+            return "You failed! Need to take this subject again"
+        default:
+            return "contact admin"
+    }
+}
+
+```
+
+### conditional switch statements
+
+``` go
+package main
+
+import (
+    "fmt"
+)
+
+func main(){
+    var sub1 int = 20
+    var sub2 int = 70
+    var res string = subjects(sub1, sub2)
+    fmt.Println(res)
+}
+
+func subjects(sub1 int, sub2 int) (string){
+    var res int =  sub1 + sub2
+    switch res{             // confitional switch statement
+        case 100:
+            return "A"
+        case 90:
+            return "B"
+        case 80:
+            return "C"
+        default:
+            return "F"
+    }
+}
+
+```
+
+## Arrays, Slices, Maps and Loops
+
+### Arrays
+
+* Fixed Length
+* same type
+* indexable
+* Contiguous in Memory
+
+``` go
+package main
+
+import (
+    "fmt"
+)
+
+func main(){
+    var intArr [3]int32 = [3]int32{1,2,3}     // assigning the 
+    intArr := [3]int32{1,2,3}
+    intArr := [...]int32{1,2,3}
+    var intArr [3]int32      // declaring the array with size 3 and with int32 datatype
+    intArr[0] = 43      // Assigning the vale
+    fmt.Println(intArr[0])
+    fmt.Println(intArr[1:3])        // 3 is excluded
+    fmt.Println(&intArr[0])         // memory location
+    fmt.Println(&intArr[1])
+    fmt.Println(&intArr[2])
+}
+```
+
+### slices
+slice is a dynamically-sized, flexible view into a contiguous sequence of elements within an array. It provides a way to work with portions of an array without copying the underlying data.
+
+In other words slices are wrapper around the arrays, which gives a more general, powerful and convenient interface to sequences of data.
+
+Operations on slices include:
+* Accessing elements: slice[index]
+* Slicing: slice[low:high], slice[:high], slice[low:]
+* Appending: append(slice, elements...)
+* Copying: copy(destSlice, srcSlice)
+* Getting length: len(slice)
+* Getting capacity: cap(slice)
+
+``` go
+// by emitting the length value we have slice
+
+
+```
+
+
 
