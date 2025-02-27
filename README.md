@@ -301,7 +301,7 @@ import (
 )
 
 func main(){
-    var myMap map[string]uint8 = make(map[string]uint8)     // defining the map
+    var myMap map[string]uint8 = make(map[string]uint8)     // defining the map; map[string]uint8 -> string = key datatype and uint8 = value datatype
     myMap = map[string]uint8{"anu": 24, "chinnu": 25}   // assigning values
     fmt.Println(myMap)
     fmt.Println(myMap["anu"])       // get a value using key
@@ -351,10 +351,244 @@ func main(){
 
 ### structs
 
-* It can hold difference types of datatypes
+Structs are composite data types that group together variables (fields) under a single name. They provide a way to create custom data structures, similar to classes in other languages, but without inheritance.
+
+* structs is defining your own type
+* type gasEngine struct{} ; type - keywords, gasEngine - name of the type, struct - defining the struct type
+* struct can store any datatypes in it
 
 ``` go
+package main
+
+import (
+    "fmt"
+)
+
+type gasEngine struct{
+    mpg uint8           // mpg and gallons are the fields
+    gallons uint8
+//     ownerName owner
+    owner
+    int
+}
+
+type owner struct{
+    name string
+}
+
+func main(){
+    var myEngine gasEngine = gasEngine{25, 15, owner{"anu"}, 17 }   // assigning values to the fields
+    myEngine.mpg = 20                       // reassigning the value
+//     fmt.Println(myEngine.mpg, myEngine.gallons, myEngine.ownerName.name)
+    fmt.Println(myEngine.mpg, myEngine.gallons, myEngine.name, myEngine.int)
+}
 ```
+``` go
+package main
+
+import (
+    "fmt"
+)
+
+type gasEngine struct{
+    mpg uint8
+    gallons uint8
+}
+
+// defining methods in structs
+
+func (e gasEngine) milesLeft() uint8{
+    return e.gallons*e.mpg
+}
+
+func canMakeIt(e gasEngine, miles uint8){
+    if miles <= e.milesLeft(){
+        fmt.Println("you can make it there")
+    } else {
+        fmt.Println("need to fuel up first")
+    }
+}
+
+func main(){
+    var myEngine gasEngine = gasEngine{25, 15}
+    fmt.Printf("Total miles left in the tank : %v", myEngine.milesLeft())
+}
+```
+### interfaces
+
+Interfaces define a set of methods that a type must implement to satisfy the interface. They specify behavior without dictating implementation, enabling polymorphism and loose coupling. Any type that implements all the methods of an interface implicitly satisfies that interface. 
+
+``` go
+package main
+
+import (
+    "fmt"
+)
+
+type gasEngine struct{
+    mpg uint8
+    gallons uint8
+}
+
+func (e gasEngine) milesLeft() uint8{
+    return e.gallons*e.mpg
+}
+
+func canMakeIt(e gasEngine, miles uint8){
+    if miles <= e.milesLeft(){
+        fmt.Println("you can make it there")
+    } else {
+        fmt.Println("need to fuel up first")
+    }
+}
+
+type engine interface{
+    milesLeft() uint8
+}
+
+func main(){
+    var myEngine gasEngine = gasEngine{25, 15}
+    canMakeIt(myEngine, 50)
+}
+```
+## Pointer
+
+* Pointer are the special type
+* These are the variables which store the memory locations rather than the integers/ floats
+  
+## Goroutines
+
+* goroutines are used to lunch multiple functions and run concurrently
+  
+## Channels
+* channels enable goroutines which to pass around information
+* they hold data like integer, slices
+* they are thread safe i.e we avoid data races while reading or writing from the memory
+* we can listen data -> we can listen when the data is added or removed from the channel
+* And we can block code execution when one of these events got executed
+
+NOTE: A "data race" is a concurrency bug that occurs when multiple threads in a program attempt to access the same memory location concurrently
+
+The below program gives you a deadlock error, we assigned channel c with 1 after that we are moving 1 to i. but when we are running this program it is trying to access element which is in channel, but the channel is empty. So that is why we are getting deadlock error.
+
+``` go
+package main
+import("fmt")
+func main(){
+    var c = make(chan int)      // channel to hold a value, it's holding int value  // c: []
+    c <- 1                      // to assign a value to the channel                 // c: [1]
+    var i = <- 1                // retrieving the channel and storing in i          // c: [ ] channel becomes empty and i = 1 i becomes 1
+    fmt.Println(i)              // deadlock error                                   // we are trying to access the element which is not present in the channel.
+}
+```
+
+To solve this issue we have to use goroutines.
+
+``` go
+package main
+
+import("fmt")
+
+func main(){
+    var c = make(chan int)
+    go process(c)       // setting the goroutine
+    fmt.Println(<-c)    // rather than storing the value in any variable; we are directly printing it right after it popped out of the channel
+}
+
+func process(c chan int){
+    defer close(c)      // do this stuff right before the function exists
+    c <- 123            // write a value to it
+}
+```
+
+### buffer channel
+
+Rather than storing one value in the channel, it can store multiple values at the same time.
+
+In the regular channel the process function will stay active till the main function is done with the channel.
+
+But there is no need for process function to hang around, it can work and get exited from the loop. Let the main function do it's thing. By using buffer channel we can add 5 values in the channel, so we are creating the space for 5 integers. we can use that space rather than waiting for the variable get empty for the popped element.
+
+``` go
+// without buffer channel
+
+package main
+
+import(
+"fmt"
+"time"
+)
+
+func main(){
+    var c = make(chan int)
+    go process(c)
+    for i := range c {
+        fmt.Println(i)
+        time.Sleep(time.Second*1)
+    }
+
+}
+
+func process(c chan int){
+    defer close(c)
+    for i := 0; i <= 5; i++ {
+        c <- i
+    }
+    fmt.Println("Exiting the process")
+
+}
+
+// output
+
+// 1
+// 2
+// 3
+// 4
+// 5
+// Exiting the process
+```
+
+``` go
+// with buffer channel
+
+package main
+
+import(
+"fmt"
+"time"
+)
+
+func main(){
+    var c = make(chan int, 5)
+    go process(c)
+    for i := range c {
+        fmt.Println(i)
+        time.Sleep(time.Second*1)
+    }
+
+}
+
+func process(c chan int){
+    defer close(c)
+    for i := 0; i <= 5; i++ {
+        c <- i
+    }
+    fmt.Println("Exiting the process")
+
+}
+
+// output
+
+// Exiting the process
+// 1
+// 2
+// 3
+// 4
+// 5
+```
+ ## Generics
+
+ 
 
 
 
