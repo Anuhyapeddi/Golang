@@ -7,7 +7,7 @@
 * It have built-in concurrency (goroutines)
 * It also have garbage collection, which is used to free up the memory which is unused.
 * It is used for the high-performance server side applications.
-* Performance is faster thean compared to FastAPI.
+* Performance is faster then compared to FastAPI.
 * The ideal use of Go is for high through put and low latency API's 
 * source code is directly converted to the machine code
 
@@ -41,17 +41,12 @@ var myBoolean bool = false
 ```
 ### types
 
-Types of Int - int, int8, int16, int32, int64 (default value - 0)
-
-Types of Unsigned Int  - uint, uint8, uint16, uint32, uint64 (default value - 0)
-
-Types of Float - float32, float64
-
-Default value for rune - 0
-
-default value for string - ''
-
-default value for boolean - false
+* Types of Int - int, int8, int16, int32, int64 (default value - 0)
+* Types of Unsigned Int  - uint, uint8, uint16, uint32, uint64 (default value - 0)
+* Types of Float - float32, float64
+* Default value for rune - 0
+* default value for string - ''
+* default value for boolean - false
 
 Arthematic operations - you can't perform operations with mix type. (Go is strongly typed)
 
@@ -97,7 +92,7 @@ func myfirst(variable1 string, variable2 string){
 ```
 ### errors
 
-* Rrror is an another built-in type in go
+* error is an another built-in type in go
 * Rather then returning error, we use this error type
 * The default value of error is nil
 
@@ -277,8 +272,92 @@ Operations on slices include:
 ``` go
 // by emitting the length value we have slice
 
+package main
 
+import (
+    "fmt"
+)
+
+func main(){
+    var intSlice []int32 = []int32{1,2,4}
+    intSlice = append(intSlice, 6)      // append method takes 2 arguments; slice name and number to be appended
+    fmt.Println(intSlice)
+
+    var intSlice2 []int32 = []int32{3,4}
+    intSlice = append(intSlice, intSlice2...)       // ... -> spread function; it appends entire list to the intSlice
+    fmt.Println(intSlice)
+
+    var intSlice3 []int32 = make([]int32, 4, 8)  //  make -> it takes 3 arguments; type and size, length, capacity
+    
+}
 ```
+### maps
+
+``` go
+package main
+
+import (
+    "fmt"
+)
+
+func main(){
+    var myMap map[string]uint8 = make(map[string]uint8)     // defining the map
+    myMap = map[string]uint8{"anu": 24, "chinnu": 25}   // assigning values
+    fmt.Println(myMap)
+    fmt.Println(myMap["anu"])       // get a value using key
+    fmt.Println(myMap["abhi"])      // it will return 0; map will always return a value if the key is not present in the map.
+    var age, ok = myMap["anu"]      // ok -> will return true if the value is present in the map
+    if ok{
+        fmt.Printf("The age is %v", age)
+    } else{
+        fmt.Println("Invalid name")
+    }
+    delete(myMap, "anu")        // deleting from the map -> map name, key (which key, value should be deleted)    
+
+}
+```
+### loops
+
+``` go
+package main
+
+import (
+    "fmt"
+)
+
+func main(){
+    var myMap map[string]uint8 = make(map[string]uint8)
+    myMap = map[string]uint8{"annu": 24, "chinnu": 34}
+    
+    // prints the names in the map
+    for name := range myMap{
+        fmt.Printf("name: %v \n", name)
+    }
+    
+    // prints numbers from 1 to 10
+    for i:=0; i<=10; i++{
+        fmt.Println(i)
+    }
+}
+```
+## Strings and Rune
+
+* Strings represent UTF-8 in go
+* Strings represent in binary formate by using ASCII encoding using 7-bits
+* rune is generally used to represent string in byte formate
+* strings are not changable
+
+## Structs and Interfaces
+
+### structs
+
+* It can hold difference types of datatypes
+
+``` go
+```
+
+
+
 
 
 
