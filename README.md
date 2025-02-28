@@ -588,6 +588,8 @@ func process(c chan int){
 ```
  ## Generics
 
+ Allowing a func
+
  
 
 
