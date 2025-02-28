@@ -588,7 +588,29 @@ func process(c chan int){
 ```
 ## Generics
 
-Allowing a function
+Allowing a function receving additional parameters
+
+Imagine you are having a different functions which accepts different data types. Rather than writing all functions, we can use generics which can accept different data types in one function. 
+
+``` go
+// Generics in Go allow you to write functions and data structures that work with different types without repeating code. Instead of specifying a single type, you use **type parameters**, making the code more flexible and reusable.
+
+### Example:
+package main
+
+import "fmt"
+
+// Generic function with a type parameter T
+func Print[T any](value T) {
+    fmt.Println(value)
+}
+
+func main() {
+    Print(10)       // Works with int
+    Print("Hello")  // Works with string
+    Print(3.14)     // Works with float
+}
+```
 
 ## API Gateway
 
@@ -597,7 +619,17 @@ An API Gateway is a software component that acts as a single entry point for all
 * Authentication & Authorization: May integrate with RBAC or external identity systems.
 * Routing & Load Balancing: Distributes incoming requests to the appropriate backend service or microservice.
 
-NOTE: Role-based access control (RBAC) is a security method that limits access to systems based on a user's role
+NOTE: 
+* RBAC - Role-based access control (RBAC) is a security method that limits access to systems based on a user's role
+* Unmarshalling - loading the JSON into the struct (the process of converting data from a lower-level representation into a higher-level structure)
+
+## Golang code structure
+
+## API Authentication
+
+## Middleware
+
+## Package Management
 
  
 
