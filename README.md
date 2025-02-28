@@ -586,9 +586,18 @@ func process(c chan int){
 // 4
 // 5
 ```
- ## Generics
+## Generics
 
- Allowing a func
+Allowing a function
+
+## API Gateway
+
+An API Gateway is a software component that acts as a single entry point for all API requests, essentially a "front door" to a system, receiving client requests and routing them to the appropriate backend services, while also performing tasks like authentication, authorization, load balancing, and request processing based on defined policies; effectively managing interactions between clients and application services by providing a centralized point of access
+
+* Authentication & Authorization: May integrate with RBAC or external identity systems.
+* Routing & Load Balancing: Distributes incoming requests to the appropriate backend service or microservice.
+
+NOTE: Role-based access control (RBAC) is a security method that limits access to systems based on a user's role
 
  
 
