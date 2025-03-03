@@ -595,7 +595,7 @@ Imagine you are having a different functions which accepts different data types.
 ``` go
 // Generics in Go allow you to write functions and data structures that work with different types without repeating code. Instead of specifying a single type, you use **type parameters**, making the code more flexible and reusable.
 
-### Example:
+// Example:
 package main
 
 import "fmt"
