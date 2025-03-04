@@ -1,14 +1,14 @@
 # Go
 
 * Go is the statically type language.
-* Is is strongly typed language.
+* It is strongly typed language.
 * It is compiled language.
 * It has fast compile time.
 * It have built-in concurrency (goroutines)
-* It also have garbage collection, which is used to free up the memory which is unused.
+* It also have garbage collection, which is used to free up the memory that is unused.
 * It is used for the high-performance server side applications.
 * Performance is faster then compared to FastAPI.
-* The ideal use of Go is for high through put and low latency API's 
+* The ideal use of Go is for high through-put and low latency API's 
 * source code is directly converted to the machine code
 
 The main difference between package and module:
@@ -107,7 +107,7 @@ import (
 func main(){
     var num1 int = 2
     var num2 int = 4
-    var res, rem, err= division(num1, num2)
+    var res, rem, err = division(num1, num2)
     if err!=nil{         // checking if the err is nil or not
         fmt.Println(err.Error())
     }else if rem == 0{
@@ -243,7 +243,7 @@ import (
 )
 
 func main(){
-    var intArr [3]int32 = [3]int32{1,2,3}     // assigning the 
+    var intArr [3]int32 = [3]int32{1,2,3}     // assigning the array
     intArr := [3]int32{1,2,3}
     intArr := [...]int32{1,2,3}
     var intArr [3]int32      // declaring the array with size 3 and with int32 datatype
@@ -383,6 +383,8 @@ func main(){
     fmt.Println(myEngine.mpg, myEngine.gallons, myEngine.name, myEngine.int)
 }
 ```
+Defining methods in structs 
+
 ``` go
 package main
 
@@ -458,7 +460,7 @@ func main(){
   
 ## Goroutines
 
-* goroutines are used to lunch multiple functions and run concurrently
+* goroutines are used to handle multiple functions and run concurrently
   
 ## Channels
 * channels enable goroutines which to pass around information
@@ -623,8 +625,71 @@ NOTE:
 * RBAC - Role-based access control (RBAC) is a security method that limits access to systems based on a user's role
 * Unmarshalling - loading the JSON into the struct (the process of converting data from a lower-level representation into a higher-level structure)
 
-## Golang code structure
+## API Creation
 
+``` go
+package main
+
+import (
+    "encoding/json"
+    "net/http"
+    "fmt"
+)
+
+// Struct for handling JSON data
+type User struct {
+    Name  string `json:"name"`
+    Email string `json:"email"`
+}
+
+// Handler for GET request
+func pingHandler(w http.ResponseWriter, r *http.Request) {
+    w.Header().Set("Content-Type", "application/json")
+    json.NewEncoder(w).Encode(map[string]string{"message": "pong"})
+}
+
+// Handler for POST request
+func userHandler(w http.ResponseWriter, r *http.Request) {
+    if r.Method != http.MethodPost {
+        http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+        return
+    }
+
+    var user User
+    err := json.NewDecoder(r.Body).Decode(&user)
+    if err != nil {
+        http.Error(w, "Bad request", http.StatusBadRequest)
+        return
+    }
+
+    w.Header().Set("Content-Type", "application/json")
+    json.NewEncoder(w).Encode(user)
+}
+
+// main function
+
+func main() {                  
+    http.HandleFunc("/ping", pingHandler)
+    http.HandleFunc("/users", userHandler)
+
+    fmt.Println("Server is running on port 8080...")
+    http.ListenAndServe(":8080", nil) // Start the server
+}
+
+``` 
+go run main.go -  to run the above code
+
+``` go
+func homePage(w http.ResponseWriter, r *http.Request) {
+    fmt.Fprint(w, "Hello, World!") // Sends "Hello, World!" as a response
+}
+
+// w http.ResponseWriter → Used to send a response back to the client (e.g., a browser or API caller).
+
+// r *http.Request → Represents the incoming request from the client (contains details like method, headers, body, etc.)
+
+// Here, w is used to send "Hello, World!" as the response to the client that made the request.
+```
 ## API Authentication
 
 ## Middleware
