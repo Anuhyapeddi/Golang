@@ -690,6 +690,64 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 
 // Here, w is used to send "Hello, World!" as the response to the client that made the request.
 ```
+Gorilla Mux
+
+``` go
+package main
+
+import (
+"fmt"
+"log"
+"net/http"
+"encoding/json"
+"github.com/gorilla/mux"    // import gorilla mux package
+)
+
+type User struct{
+    Name string `json:"Name"`
+    Age int64 `json:"Age"`
+}
+
+type Users []User
+
+func allUsers(w http.ResponseWriter, r *http.Request){
+    users := Users{
+        {Name: "Alice", Age: 17},
+        {Name: "Bob", Age: 24},
+        }
+    fmt.Println(users)
+    json.NewEncoder(w).Encode(users)
+    }
+
+
+func homePage(w http.ResponseWriter, r *http.Request){
+    fmt.Fprint(w, "Homepage endpoint hit")
+}
+
+func aboutPage(w http.ResponseWriter, r *http.Request){
+    fmt.Fprint(w, "This is about page")
+}
+
+func postUser(w http.ResponseWriter, r *http.Request){
+    fmt.Fprint(w, "creating the POST call")
+}
+
+func handleRequest() {
+    myRouter := mux.NewRouter().StrictSlash(true)    // init gorilla mux
+
+    myRouter.HandleFunc("/", homePage)
+    myRouter.HandleFunc("/about", aboutPage)
+    myRouter.HandleFunc("/users", allUsers).Methods("GET")     // get call
+    myRouter.HandleFunc("/users", postUser).Methods("POST")    // post call
+    log.Fatal(http.ListenAndServe(":8080", myRouter))
+}
+
+func main(){
+    handleRequest()
+    fmt.Println("Server is running in port 8080")
+}
+```
+
 ## API Authentication
 
 ## Middleware
