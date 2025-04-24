@@ -346,7 +346,11 @@ func main(){
 * Strings represent in binary formate by using ASCII encoding using 7-bits
 * rune is generally used to represent string in byte formate
 * strings are not changable
-* String is a sequence of bytes; rune is an int32 representing a Unicode code point.
+* String is a sequence of bytes; rune is an int32 representing a Unicode code point
+* Strings are immutable; runes are values that can be assigned and manipulated
+* String can hold any byte sequence, but is usually UTF-8 text; rune represents a single Unicode character
+* Strings are used for general text manipulation and storage; runes are used for character-level operations and handling Unicode
+* String size depends on its content; rune is always 4 bytes (32 bits)
 
 ## Structs and Interfaces
 
